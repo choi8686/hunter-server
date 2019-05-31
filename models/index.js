@@ -8,12 +8,7 @@ const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.json")[env];
 const db = {};
 
-const sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  config
-);
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
@@ -45,9 +40,10 @@ db.Teamimage.belongsTo(db.Team, {
 
 db.User.hasOne(db.Team, { as: "team", foreignKey: "userId" });
 
-db.Team.belongsToMany(db.Like, { through: "match" });
-db.Like.belongsToMany(db.Team, { through: "match" });
+db.Team.hasMany(db.Like, { foreignKey: "toLikeId" });
+db.Like.belongsTo(db.Team, { foreignKey: "whoLikeId" });
 
-db.Team.belongsToMany(db.Message, { through: "chatroom" });
-db.Message.belongsToMany(db.Team, { through: "chatroom" });
+db.Team.hasMany(db.Message, { foreignKey: "toTeamId" });
+db.Message.belongsTo(db.Team, { foreignKey: "senderTeamId" });
+
 module.exports = db;

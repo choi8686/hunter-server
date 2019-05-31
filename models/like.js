@@ -9,13 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       whoLike: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        REFERENCES: { model: "team", key: "id" }
+        allowNull: false
       },
       toLike: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        REFERENCES: { model: "team", key: "id" }
+        allowNull: false
       },
       introText: {
         type: DataTypes.STRING,
