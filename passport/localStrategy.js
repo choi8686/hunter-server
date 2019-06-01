@@ -1,10 +1,7 @@
-const passport = require("passport");
-const passportJWT = require("passport-jwt");
-let models = require("./models");
-const ExtractJWT = passportJWT.ExtractJwt;
-
 const LocalStrategy = require("passport-local").Strategy;
-const JWTStrategy = passportJWT.Strategy;
+const bcrypt = require("bcrypt");
+
+const models = require("../models");
 
 module.exports = passport => {
   passport.use(
@@ -34,26 +31,25 @@ module.exports = passport => {
       }
     )
   );
-
-  passport.use(
-    new JWTStrategy(
-      {
-        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey: "JWT_SECRET"
-      },
-      function(jwtPayload, cb) {
-        //find the user in db if needed
-        return models.User.findById(jwtPayload.id)
-          .then(user => {
-            return cb(null, user);
-          })
-          .catch(err => {
-            return cb(err);
-          });
-      }
-    )
-  );
 };
+// passport.use(
+//   new JWTStrategy(
+//     {
+//       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+//       secretOrKey: "JWT_SECRET"
+//     },
+//     function(jwtPayload, cb) {
+//       //find the user in db if needed
+//       return models.User.findOne({ where: { id: jwtPayload.id } })
+//         .then(user => {
+//           return cb(null, user);
+//         })
+//         .catch(err => {
+//           return cb(err);
+//         });
+//     }
+//   )
+// );
 
 // const passport = require("passport");
 // const passportJWT = require("passport-jwt");

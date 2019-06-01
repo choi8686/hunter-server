@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const models = require("../models");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const passport = require("passport");
+let models = require("../models");
+let bcrypt = require("bcrypt");
+let passport = require("passport");
+let { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
-router.post("/signup", async (req, res, next) => {
+router.post("/signup", isNotLoggedIn, async (req, res, next) => {
   //회원가입, post
   const { nickname, password } = req.body;
   try {
@@ -30,26 +30,44 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-router.post("/login", (req, res, next) => {
-  passport.authenticate("local", { session: false }, (err, user, info) => {
-    console.log(err);
-    if (err || !user) {
-      return res.status(400).json({
-        message: info ? info.message : "Login failed",
-        user: user
-      });
+router.post("/login", isNotLoggedIn, async (req, res, next) => {
+  passport.authenticate("local", (authError, user) => {
+    if (authError) {
+      console.error(authError);
+      return next(authError);
     }
-
-    req.login(user, { session: false }, err => {
-      if (err) {
-        res.send(err);
+    if (!user) {
+      console.log("가입해 새끼야");
+      return res.redirect("/signup");
+    }
+    return req.login(user, loginError => {
+      if (loginError) {
+        console.error(loginError);
+        return next(loginError);
       }
-
-      const token = jwt.sign(user, "JWT_SECRET");
-
-      return res.json({ user, token });
+      console.log("환영한다 새끼야");
+      return res.redirect("/");
     });
-  })(req, res);
+  })(req, res, next); //미들웨어 내의 미들웨어에는 (req, res, next) 첨부
 });
 
+router.get("/logout", isLoggedIn, (req, res) => {
+  req.logout();
+  req.session.destroy();
+});
 module.exports = router;
+
+// if (req.body.nickname && req.body.password) {
+//   const { nickname, password } = req.body;
+//   const hash = await bcrypt.hash(password, 12);
+//   const user = await models.User.findOne({
+//     where: { nickname: nickname, password: password }
+//   });
+//   if (user) {
+//     res.send(user);
+//   } else {
+//     res.send(false);
+//   }
+// } else {
+//   res.sendStatus(400);
+// }

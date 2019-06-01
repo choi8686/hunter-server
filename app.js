@@ -6,14 +6,14 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var sequelize = require("./models").sequelize;
-
+var passportConfig = require("./passport");
 var session = require("express-session");
 
 require("dotenv").config();
 
 var app = express();
 sequelize.sync({
-  force: true
+  // force: true
 });
 
 app.use(bodyParser.json());
@@ -34,7 +34,7 @@ var passport = require("passport");
 
 app.use(passport.initialize());
 app.use(passport.session());
-require("./passport");
+passportConfig(passport);
 
 app.use("/", indexRouter);
 
