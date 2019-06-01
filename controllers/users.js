@@ -56,18 +56,3 @@ router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy();
 });
 module.exports = router;
-
-// if (req.body.nickname && req.body.password) {
-//   const { nickname, password } = req.body;
-//   const hash = await bcrypt.hash(password, 12);
-//   const user = await models.User.findOne({
-//     where: { nickname: nickname, password: password }
-//   });
-//   if (user) {
-//     res.send(user);
-//   } else {
-//     res.send(false);
-//   }
-// } else {
-//   res.sendStatus(400);
-// }
