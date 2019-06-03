@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       toTeam: {
         type: DataTypes.INTEGER,
         allowNull: false
+      },
+      text: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
     {
