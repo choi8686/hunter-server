@@ -14,6 +14,7 @@ require("dotenv").config();
 var app = express();
 sequelize.sync({});
 
+app.set("port", process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(logger("dev"));
 app.use(express.json());
@@ -54,4 +55,6 @@ app.use(function(err, req, res, next) {
   res.json({ error: err });
 });
 
-module.exports = app;
+const server = app.listen(app.get("port"), () => {
+  console.log(app.get("port"), "번 포트에서 대기중");
+});
