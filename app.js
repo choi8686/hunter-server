@@ -12,9 +12,7 @@ var session = require("express-session");
 require("dotenv").config();
 
 var app = express();
-sequelize.sync({
-  // force: true
-});
+sequelize.sync({});
 
 app.use(bodyParser.json());
 app.use(logger("dev"));
