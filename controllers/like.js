@@ -3,7 +3,7 @@ const router = express.Router();
 const models = require("../models");
 
 router.post("", async (req, res) => {
-  const { whoLikeId, toLikeId } = req.body;
+  const { whoLikeId, toLikeId, introText } = req.body;
   try {
     //try this code.
     const existent = await models.Like.findAll({
@@ -13,7 +13,8 @@ router.post("", async (req, res) => {
     if (existent.length == 0) {
       await models.Like.create({
         whoLikeId: whoLikeId,
-        toLikeId: toLikeId
+        toLikeId: toLikeId,
+        introText: introText
       }).then(result => {
         res.status(200).json(result);
       });

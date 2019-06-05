@@ -7,14 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true
       },
-      senderTeam: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
-      toTeam: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
+
       text: {
         type: DataTypes.STRING,
         allowNull: false
