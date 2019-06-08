@@ -8,11 +8,19 @@ var logger = require("morgan");
 var sequelize = require("./models").sequelize;
 var passportConfig = require("./passport");
 var session = require("express-session");
+var socket = require("./socket");
 
 require("dotenv").config();
 
 var app = express();
 sequelize.sync({});
+
+/*var server = app.listen(app.get("port"), () => {
+  console.log(app.get("port"), "번 포트에서 대기중"); //server listen
+});
+var io = require("socket.io").listen(server);*/
+
+//io.on("connection", socket);
 
 app.set("port", process.env.PORT || 3000);
 app.use(bodyParser.json());
@@ -55,6 +63,9 @@ app.use(function(err, req, res, next) {
   res.json({ error: err });
 });
 
-const server = app.listen(app.get("port"), () => {
-  console.log(app.get("port"), "번 포트에서 대기중");
+var server = app.listen(app.get("port"), () => {
+  console.log(app.get("port"), "번 포트에서 대기중"); //server listen
 });
+var io = require("socket.io").listen(server);
+
+io.on("connection", socket);

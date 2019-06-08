@@ -46,7 +46,7 @@ router.post("/login", isNotLoggedIn, async (req, res, next) => {
         return next(loginError);
       }
       console.log("환영한다 새끼야");
-      return res.redirect("/");
+      return res.send(user);
     });
   })(req, res, next); //미들웨어 내의 미들웨어에는 (req, res, next) 첨부
 });
