@@ -1,23 +1,17 @@
-module.exports = io => {
-  io.on("connection", socket => {
-    // 웹소켓 연결 시
-    console.log("Socket initiated!");
-    socket.on("newScoreToServer", data => {
-      // 클라이언트에서 newScoreToServer 이벤트 요청 시
-      console.log("Socket: newScore");
-      io.emit("newScoreToClient", data);
-    });
+const models = require("./models");
+const Op = models.Sequelize.Op;
+
+const socket = function(socket) {
+  console.log("a socket connected!");
+  socket.on("message", msg => {
+    socket.emit("chat message", msg);
+  });
+  socket.on("disconnect", () => {
+    console.log("user disconnectied");
   });
 };
 
-io.on("connection", socket => {
-  socket.on("disconnect", () => {
-    console.log("disconnected");
-  });
-});
+module.exports = socket;
 
-var socket = io.connect("서버 주소");
-socket.on("서버에서 받을 이벤트명", function(데이터) {
-  // 받은 데이터 처리
-  socket.emit("서버로 보낼 이벤트명", 데이터);
-});
+//HTML로 클라이언트를 먼저 작성
+//server에서 session 처럼 socketio를 socketId : teamId
