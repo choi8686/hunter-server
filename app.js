@@ -1,3 +1,4 @@
+//라이브러리 모음
 var createError = require("http-errors");
 var express = require("express");
 const indexRouter = require("./routes/index");
@@ -8,13 +9,13 @@ var logger = require("morgan");
 var sequelize = require("./models").sequelize;
 var passportConfig = require("./passport");
 var session = require("express-session");
+var socket = require("./socket");
 
-require("dotenv").config();
+require("dotenv").config(); // .env에 모아둔 비밀키를 읽어 process.env 객체에 넣음.
 
 var app = express();
-sequelize.sync({});
+sequelize.sync({}); //sequelize 연결
 
-app.set("port", process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(logger("dev"));
 app.use(express.json());
@@ -55,6 +56,11 @@ app.use(function(err, req, res, next) {
   res.json({ error: err });
 });
 
-const server = app.listen(app.get("port"), () => {
-  console.log(app.get("port"), "번 포트에서 대기중");
+var server = app.listen(app.get("port"), () => {
+  console.log(app.get("port"), "번 포트에서 대기중"); //server listen
 });
+
+var io = require("socket.io").listen(server);
+
+io.on("connection", socket);
+app.set("port", process.env.PORT || 3000);
