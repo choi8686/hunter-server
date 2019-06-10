@@ -55,4 +55,5 @@ router.get("/logout", isLoggedIn, (req, res) => {
   req.logout();
   req.session.destroy();
 });
+
 module.exports = router;

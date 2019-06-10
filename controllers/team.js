@@ -14,7 +14,6 @@ router.post("", (req, res) => {
     teamname: teamname,
     locationId: locationId, //각각 location마다 팀이 있으므로 locationId를 외래키로 가져오기 위해 넣음
     userId: userId, // 팀 생성한 user
-
     createdAt: Date(),
     updatedAt: Date()
   })

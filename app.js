@@ -1,3 +1,4 @@
+//라이브러리 모음
 var createError = require("http-errors");
 var express = require("express");
 const indexRouter = require("./routes/index");
@@ -10,11 +11,12 @@ var passportConfig = require("./passport");
 var session = require("express-session");
 var socket = require("./socket");
 
-require("dotenv").config();
+require("dotenv").config(); // .env에 모아둔 비밀키를 읽어 process.env 객체에 넣음.
 
 var app = express();
-sequelize.sync({});
+sequelize.sync({}); //sequelize 연결
 
+<<<<<<< HEAD
 /*var server = app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기중"); //server listen
 });
@@ -23,6 +25,8 @@ var io = require("socket.io").listen(server);*/
 //io.on("connection", socket);
 
 app.set("port", process.env.PORT || 3000);
+=======
+>>>>>>> 9da6e102851a6eac9cfca8484ecde0447e7e682f
 app.use(bodyParser.json());
 app.use(logger("dev"));
 app.use(express.json());
@@ -66,6 +70,14 @@ app.use(function(err, req, res, next) {
 var server = app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기중"); //server listen
 });
+<<<<<<< HEAD
 var io = require("socket.io").listen(server);
 
 io.on("connection", socket);
+=======
+
+var io = require("socket.io").listen(server);
+
+io.on("connection", socket);
+app.set("port", process.env.PORT || 3000);
+>>>>>>> 9da6e102851a6eac9cfca8484ecde0447e7e682f
