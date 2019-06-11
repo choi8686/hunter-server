@@ -16,7 +16,6 @@ require("dotenv").config(); // .env에 모아둔 비밀키를 읽어 process.env
 var app = express();
 sequelize.sync({}); //sequelize 연결
 
-
 /*var server = app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기중"); //server listen
 });
@@ -24,7 +23,7 @@ var io = require("socket.io").listen(server);*/
 
 //io.on("connection", socket);
 
-app.set("port", process.env.PORT || 3000)
+app.set("port", process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(logger("dev"));
 app.use(express.json());
@@ -70,5 +69,10 @@ var server = app.listen(app.get("port"), () => {
 });
 var io = require("socket.io").listen(server);
 
-io.on("connection", socket);
-
+io.on("connection", socket => {
+  console.log("a user connected");
+  socket.on("chat message", msg => {
+    console.log(msg);
+    io.emit("chat message", msg);
+  });
+});

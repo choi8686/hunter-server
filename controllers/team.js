@@ -74,4 +74,29 @@ router.get("/district/:getDistrict", (req, res) => {
     });
 });
 
+router.put("/change", async (req, res, next) => {
+  const { count, age, comment, teamname, userId, locationId } = req.body;
+  if (count && age && comment && teamname && locationId) {
+    await models.Team.update(
+      {
+        count: count,
+        age: age,
+        comment: comment,
+        teamname: teamname,
+        locationId: locationId
+      },
+      {
+        where: {
+          userId: userId
+        }
+      }
+    )
+      .then(result => {
+        res.status(200).json(result);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+});
 module.exports = router;
