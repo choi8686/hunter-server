@@ -10,7 +10,7 @@ var sequelize = require("./models").sequelize;
 var passportConfig = require("./passport");
 var session = require("express-session");
 var socket = require("./socket");
-
+var models = require("./models");
 require("dotenv").config(); // .env에 모아둔 비밀키를 읽어 process.env 객체에 넣음.
 
 var app = express();
@@ -69,10 +69,14 @@ var server = app.listen(app.get("port"), () => {
 });
 var io = require("socket.io").listen(server);
 
+var users = {};
 io.on("connection", socket => {
   console.log("a user connected");
-  socket.on("chat message", msg => {
-    console.log(msg);
-    io.emit("chat message", msg);
+
+  socket.on("chat message", data => {
+    models.Message.create({
+      message: data.message,
+      username: data.username
+    });
   });
 });

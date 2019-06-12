@@ -28,6 +28,7 @@ router.post("", async (req, res) => {
   }
 });
 
+module.exports = router;
 // router.post("/team1Id/team2Id", (req, res) => {
 //   const { team1, team2 } = req.params;
 //   models.Like.findAll({
@@ -85,4 +86,9 @@ router.post("", async (req, res) => {
 //없으면 좋아요를 했다는 표시를 함.
 //user2가 user1을 좋아요 누르면 채팅방이 생성 됨.
 //텍스트가 null인ㅇ지 아닌지로 판단해서 null이면 district, 내용이 없으면 default 갑 보낼 것.
-module.exports = router;
+
+//create match table
+//상대 userId
+//상대 teamname
+//상대 사진
+//대화내용
