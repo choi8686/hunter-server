@@ -19,6 +19,7 @@ db.Team = require("./team")(sequelize, Sequelize);
 db.Teamimage = require("./teamimage")(sequelize, Sequelize);
 db.Like = require("./like")(sequelize, Sequelize);
 db.Message = require("./message")(sequelize, Sequelize);
+db.Match = require("./match")(sequelize, Sequelize);
 
 db.Location.hasMany(db.Team, {
   foreignKey: "locationId",
@@ -46,4 +47,6 @@ db.Like.belongsTo(db.Team, { foreignKey: "whoLikeId" });
 db.Team.hasMany(db.Message, { foreignKey: "toTeamId" });
 db.Message.belongsTo(db.Team, { foreignKey: "senderTeamId" });
 
+db.Team.belongsToMany(db.Match, { through: "chat" });
+db.Match.belongsToMany(db.Team, { through: "chat" });
 module.exports = db;

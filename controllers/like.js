@@ -15,20 +15,34 @@ router.post("", async (req, res) => {
         whoLikeId: whoLikeId,
         toLikeId: toLikeId,
         introText: introText
-      }).then(result => {
-        res.status(200).json(result);
       });
-    } else {
-      res.sendStatus(400);
     }
+    const match = await models.Like.findOne({
+      where: {
+        toLikeId: whoLikeId,
+        whoLikeId: toLikeId
+      }
+    });
+    if (match) {
+      models.Match.create({
+        team1: whoLikeId,
+        team2: toLikeId
+      });
+    }
+
+    res.status(200).json({
+      success: true
+    });
   } catch (err) {
     //if you have error console.log error
-
     console.log(err);
   }
 });
 
 module.exports = router;
+
+/*tolikeid의 갑 wholikeid이고 wholikeid의 값 tolikeid이면 match table생성 */
+
 // router.post("/team1Id/team2Id", (req, res) => {
 //   const { team1, team2 } = req.params;
 //   models.Like.findAll({

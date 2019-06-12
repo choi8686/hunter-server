@@ -5,8 +5,10 @@ let { isNotLoggedIn } = require("./middlewares");
 
 router.get("/:id", isNotLoggedIn, function(req, res, next) {
   const id = req.params;
-  models.Messages.findOne({
-    id: id
+  models.Message.findAll({
+    where: {
+      senderTeamId: id
+    }
   })
     .then(result => {
       res.status(200).json(result);

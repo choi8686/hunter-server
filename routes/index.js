@@ -5,11 +5,13 @@ const usersRouter = require("../controllers/users");
 const teamsRouter = require("../controllers/team");
 const likeRouter = require("../controllers/like");
 const imageUploadRouter = require("../controllers/teamImage");
+const messageRouter = require("../controllers/messages");
 
 router.use("/users", usersRouter);
 router.use("/teams", teamsRouter);
 router.use("/like", likeRouter);
 router.use("/upload", imageUploadRouter);
+router.use("/messages", messageRouter);
 
 /* GET home page. */
 router.get("/", function(req, res, next) {
