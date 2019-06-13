@@ -43,15 +43,14 @@ module.exports = passport => {
       try {
         models.User.findOne({
           where: {
-            nickname: jwt_payload.id
+            id: jwt_payload.id
           }
         }).then(user => {
           if (user) {
             console.log("user found in db in passport");
             done(null, user);
           } else {
-            console.log("user not found in db");
-            done(null, false);
+            done(null, false, { message: "User not found in DB" });
           }
         });
       } catch (err) {

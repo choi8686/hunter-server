@@ -47,7 +47,7 @@ router.post("/login", isNotLoggedIn, async (req, res, next) => {
           nickname: user.nickname
         }
       }).then(user => {
-        const token = jwt.sign({ id: user.nickname }, jwtSecret.secret);
+        const token = jwt.sign({ id: user.id, nickname: user.nickname, password: user.password }, jwtSecret.secret);
         res.status(200).send({
           auth: true,
           token: token,
@@ -56,6 +56,33 @@ router.post("/login", isNotLoggedIn, async (req, res, next) => {
       });
     });
   })(req, res, next); //미들웨어 내의 미들웨어에는 (req, res, next) 첨부
+});
+
+//jwt decode 부분
+router.get("/info", (req, res, next) => {
+  passport.authenticate("jwt", { session: false }, (err, user, info) => {
+    if (err) {
+      console.log(err);
+    }
+    if (info !== undefined) {
+      let responseData = {
+        success: false,
+        message: info.message
+      };
+      res.send(responseData);
+    } else {
+      console.log("user found in DB!");
+      console.log(user);
+      let responseData = {
+        success: true,
+        userInfo: {
+          id: user.id,
+          nickname: user.nickname
+        }
+      };
+      res.status(200).send(responseData);
+    }
+  })(req, res, next);
 });
 
 router.get("/logout", isLoggedIn, (req, res) => {
