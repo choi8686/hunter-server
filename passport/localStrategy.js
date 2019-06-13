@@ -1,6 +1,8 @@
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
-
+const jwtSecret = require("../config/jwtConfig");
+const JWTStrategy = require("passport-jwt").Strategy;
+const ExtractJWT = require("passport-jwt").ExtractJwt;
 const models = require("../models");
 
 module.exports = passport => {
@@ -31,74 +33,30 @@ module.exports = passport => {
       }
     )
   );
+  const opts = {
+    jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme("JWT"),
+    secretOrKey: jwtSecret.secret
+  };
+  passport.use(
+    "jwt",
+    new JWTStrategy(opts, (jwt_payload, done) => {
+      try {
+        models.User.findOne({
+          where: {
+            nickname: jwt_payload.id
+          }
+        }).then(user => {
+          if (user) {
+            console.log("user found in db in passport");
+            done(null, user);
+          } else {
+            console.log("user not found in db");
+            done(null, false);
+          }
+        });
+      } catch (err) {
+        done(err);
+      }
+    })
+  );
 };
-// passport.use(
-//   new JWTStrategy(
-//     {
-//       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-//       secretOrKey: "JWT_SECRET"
-//     },
-//     function(jwtPayload, cb) {
-//       //find the user in db if needed
-//       return models.User.findOne({ where: { id: jwtPayload.id } })
-//         .then(user => {
-//           return cb(null, user);
-//         })
-//         .catch(err => {
-//           return cb(err);
-//         });
-//     }
-//   )
-// );
-
-// const passport = require("passport");
-// const passportJWT = require("passport-jwt");
-// const models = require("./models");
-// const ExtractJWT = passportJWT.ExtractJwt;
-
-// const LocalStrategy = require("passport-local").Strategy;
-// const JWTStrategy = passportJWT.Strategy;
-
-// passport.use(
-//   new LocalStrategy(
-//     {
-//       usernameField: "nickname",
-//       passwordField: "password"
-//     },
-//     function(nickname, password, cb) {
-//       //Assume there is a DB module pproviding a global UserModel
-//       return models.User.findOne({ nickname, password })
-//         .then(user => {
-//           if (!user) {
-//             return cb(null, false, { message: "Incorrect email or password." });
-//           }
-
-//           return cb(null, user, {
-//             message: "Logged In Successfully"
-//           });
-//         })
-//         .catch(err => {
-//           return cb(err);
-//         });
-//     }
-//   )
-// );
-
-// passport.use(
-//   new JWTStrategy(
-//     {
-//       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-//       secretOrKey: "JWT_SECRET"
-//     },
-//     function(jwtPayload, cb) {
-//       //find the user in db if needed
-//       return models.User.findOneById(jwtPayload.id)
-//         .then(user => {
-//           return cb(null, user);
-//         })
-//         .catch(err => {
-//           return cb(err);
-//         });
-//     }
-//   )
-// );

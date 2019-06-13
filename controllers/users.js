@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
+let jwtSecret = require("../config/jwtConfig");
+let jwt = require("jsonwebtoken");
 let models = require("../models");
 let bcrypt = require("bcrypt");
 let passport = require("passport");
@@ -40,13 +41,19 @@ router.post("/login", isNotLoggedIn, async (req, res, next) => {
       console.log("가입해 새끼야");
       return res.redirect("/signup");
     }
-    return req.login(user, loginError => {
-      if (loginError) {
-        console.error(loginError);
-        return next(loginError);
-      }
-      console.log("환영한다 새끼야");
-      return res.send(user);
+    return req.login(user, err => {
+      models.User.findOne({
+        where: {
+          nickname: user.nickname
+        }
+      }).then(user => {
+        const token = jwt.sign({ id: user.nickname }, jwtSecret.secret);
+        res.status(200).send({
+          auth: true,
+          token: token,
+          message: "user found & logged in"
+        });
+      });
     });
   })(req, res, next); //미들웨어 내의 미들웨어에는 (req, res, next) 첨부
 });

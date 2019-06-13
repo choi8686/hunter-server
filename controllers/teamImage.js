@@ -7,7 +7,6 @@ const multer = require("multer");
 const multerS3 = require("multer-s3");
 
 AWS.config.loadFromPath(__dirname + "/../config/awsconfig.json");
-
 const s3 = new AWS.S3();
 const path = require("path");
 
@@ -37,6 +36,7 @@ router.post("/", upload.single("photo"), (req, res, next) => {
     updatedAt: Date()
   })
     .then(result => {
+      console.log("success");
       res.status(200).json(req.file);
     })
     .catch(error => {

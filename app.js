@@ -72,14 +72,14 @@ var io = require("socket.io").listen(server);
 var users = {};
 io.on("connection", socket => {
   console.log("a user connected");
-
   socket.on("chat message", msg => {
-    console.log(msg);
+    socket.id = msg.teamName;
+    console.log(socket.id);
     models.Messages.create({
       toTeamId: msg.teamId,
       text: msg.text,
       toTeam: msg.teamName
     });
-    io.emit("chat message", msg);
+    io.to(socket.id).emit("chat message", msg);
   });
 });
