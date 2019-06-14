@@ -2,6 +2,26 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 
+router.get("/getUserIdTeam/:id", (req, res) => {
+  let id = req.params.id;
+  models.User.findOne({
+    include: [
+      {
+        model: models.Team,
+        where: {
+          id: id
+        }
+      }
+    ]
+  })
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
 router.post("", (req, res) => {
   const { sex, count, age, comment, teamname, locationId, userId } = req.body;
 
