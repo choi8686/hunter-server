@@ -5,6 +5,8 @@ const models = require("../models");
 router.get("/getUserIdTeam/:id", (req, res) => {
   let id = req.params.id;
   models.User.findOne({
+    //user는 1개의 팀을 가질 수 있다고 관계를 정의하였다.
+    //그래서 team에 fk로 사용하고 있는 userId를 가져옴
     include: [
       {
         model: models.Team,
