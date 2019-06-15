@@ -26,8 +26,8 @@ const upload = multer({
 });
 
 router.post("/", upload.single("photo"), (req, res, next) => {
-  const imgUrl = req.file.key;
-  const teamId = req.headers.userid;
+  const imgUrl = req.file.location;
+  const teamId = req.headers.teamid;
   console.log("==========>teamId", req.headers);
   models.Teamimage.create({
     imgUrl: imgUrl,

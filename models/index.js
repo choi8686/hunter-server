@@ -47,6 +47,6 @@ db.Like.belongsTo(db.Team, { foreignKey: "whoLikeId" });
 db.Team.hasMany(db.Message, { foreignKey: "toTeamId" });
 db.Message.belongsTo(db.Team, { foreignKey: "senderTeamId" });
 
-db.Team.belongsToMany(db.Match, { through: "chat" });
-db.Match.belongsToMany(db.Team, { through: "chat" });
+db.Team.hasMany(db.Match, { foreignKey: "teamId" });
+db.Match.belongsTo(db.Team);
 module.exports = db;

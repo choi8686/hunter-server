@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const models = require("../models");
+const uuidv4 = require("uuid/v4");
 
 router.post("", async (req, res) => {
   const { whoLikeId, toLikeId, introText } = req.body;
@@ -24,9 +25,14 @@ router.post("", async (req, res) => {
       }
     });
     if (match) {
-      models.Match.create({
-        team1: whoLikeId,
-        team2: toLikeId
+      const uuid = uuidv4();
+      const created = await models.Match.create({
+        teamId: whoLikeId,
+        uuid
+      });
+      await models.Match.create({
+        teamId: toLikeId,
+        uuid
       });
     }
 

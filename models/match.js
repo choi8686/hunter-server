@@ -8,13 +8,8 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true
       },
-      team1: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
-      team2: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+      uuid: {
+        type: DataTypes.STRING
       }
     },
     {
