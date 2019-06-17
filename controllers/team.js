@@ -11,7 +11,7 @@ router.get("/getUserIdTeam/:id", (req, res) => {
       {
         model: models.Team,
         where: {
-          id: id
+          userId: id
         }
       }
     ]
