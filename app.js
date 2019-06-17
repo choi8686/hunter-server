@@ -73,7 +73,7 @@ var users = {};
 io.on("connection", socket => {
   console.log("a user connected");
   socket.on("chat message", msg => {
-    socket.id = msg.teamName;
+    socket.id = msg.uuid;
     console.log(socket.id);
     models.Messages.create({
       toTeamId: msg.teamId,

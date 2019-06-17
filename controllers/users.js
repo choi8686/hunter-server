@@ -90,4 +90,19 @@ router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy();
 });
 
+router.post("/destroy/:id", async (req, res) => {
+  const id = req.params.id;
+  await models.User.destroy({
+    where: {
+      id: id
+    }
+  })
+    .then(result => {
+      res.send("USER ACCOUNT IS DELETED");
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
 module.exports = router;
