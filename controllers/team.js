@@ -25,7 +25,7 @@ router.get("/getUserIdTeam/:id", (req, res) => {
 });
 
 router.post("", (req, res) => {
-  const { sex, count, age, comment, teamname, locationId, userId } = req.body;
+  const { sex, count, age, comment, teamname, districtId, storeId, userId } = req.body;
 
   models.Team.create({
     //팀생성, post
@@ -34,7 +34,8 @@ router.post("", (req, res) => {
     age: age,
     comment: comment,
     teamname: teamname,
-    locationId: locationId, //각각 location마다 팀이 있으므로 locationId를 외래키로 가져오기 위해 넣음
+    districtId: districtId,
+    storeId: storeId, //각각 location마다 팀이 있으므로 locationId를 외래키로 가져오기 위해 넣음
     userId: userId, // 팀 생성한 user
     createdAt: Date(),
     updatedAt: Date()
@@ -47,15 +48,15 @@ router.post("", (req, res) => {
     });
 });
 
-router.get("/:getStore", async (req, res) => {
-  let getStore = req.params.getStore;
+router.get("/store/:getStoreId", async (req, res) => {
+  let getStoreId = req.params.getStoreId;
 
   models.Team.findAll({
     include: [
       {
-        model: models.Location,
+        model: models.Store,
         where: {
-          store: getStore
+          id: getStoreId
         }
       },
       {
@@ -72,14 +73,14 @@ router.get("/:getStore", async (req, res) => {
     });
 });
 
-router.get("/district/:getDistrict", (req, res) => {
-  let getDistrict = req.params.getDistrict;
+router.get("/district/:getDistrictId", (req, res) => {
+  let getDistrictId = req.params.getDistrictId;
   models.Team.findAll({
     include: [
       {
-        model: models.Location,
+        model: models.District,
         where: {
-          district: getDistrict
+          id: getDistrictId
         }
       },
       {

@@ -14,19 +14,29 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.User = require("./users")(sequelize, Sequelize);
-db.Location = require("./location")(sequelize, Sequelize);
+db.District = require("./district")(sequelize, Sequelize);
 db.Team = require("./team")(sequelize, Sequelize);
 db.Teamimage = require("./teamimage")(sequelize, Sequelize);
 db.Like = require("./like")(sequelize, Sequelize);
 db.Message = require("./message")(sequelize, Sequelize);
 db.Match = require("./match")(sequelize, Sequelize);
+db.Store = require("./store")(sequelize, Sequelize);
 
-db.Location.hasMany(db.Team, {
-  foreignKey: "locationId",
+db.District.hasMany(db.Team, {
+  foreignKey: "districtId",
   sourceKey: "id"
 });
-db.Team.belongsTo(db.Location, {
-  foreignKey: "locationId",
+db.Team.belongsTo(db.District, {
+  foreignKey: "districtId",
+  targetKey: "id"
+});
+
+db.Store.hasMany(db.Team, {
+  foreignKey: "storeId",
+  sourceKey: "id"
+});
+db.Team.belongsTo(db.Store, {
+  foreignKey: "storeId",
   targetKey: "id"
 });
 

@@ -1,7 +1,7 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-  const location = sequelize.define(
-    "location",
+  const district = sequelize.define(
+    "district",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -11,14 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       district: {
         type: DataTypes.STRING,
         allowNull: false
-      },
-      address: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      store: {
-        type: DataTypes.STRING,
-        allowNull: false
       }
     },
     {
@@ -26,5 +18,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return location;
+  return district;
 };

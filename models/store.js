@@ -1,16 +1,16 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-  const match = sequelize.define(
-    "match",
+  const store = sequelize.define(
+    "store",
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
-      uuid: {
-        //uniqueId
-        type: DataTypes.STRING
+      store: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
     {
@@ -18,5 +18,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return match;
+  return store;
 };
