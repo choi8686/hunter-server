@@ -98,7 +98,7 @@ router.get("/district/:getDistrictId", (req, res) => {
 });
 
 router.put("/change", async (req, res, next) => {
-  const { count, age, comment, teamname, userId, locationId } = req.body;
+  const { count, age, comment, teamname, userId, districtId, storeId } = req.body;
 
   await models.Team.update(
     {
@@ -106,7 +106,8 @@ router.put("/change", async (req, res, next) => {
       age: age,
       comment: comment,
       teamname: teamname,
-      locationId: locationId
+      districtId: districtId,
+      storeId: storeId
     },
     {
       where: {
