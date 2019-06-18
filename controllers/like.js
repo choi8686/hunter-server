@@ -26,10 +26,7 @@ router.post("", async (req, res) => {
     });
     if (match) {
       const uuid = uuidv4();
-      const created = await models.Match.create({
-        teamId: whoLikeId,
-        uuid
-      });
+
       await models.Match.create({
         teamId: toLikeId,
         uuid
