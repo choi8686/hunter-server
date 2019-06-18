@@ -75,11 +75,11 @@ io.on("connection", socket => {
   socket.on("chat message", msg => {
     socket.id = msg.uuid;
     console.log(socket.id);
-    models.Messages.create({
+    models.Message.create({
       toTeamId: msg.teamId,
       text: msg.text,
       toTeam: msg.teamName
     });
-    io.to(socket.id).emit("chat message", msg);
+    io.socket.to(socket.id).emit("chat message", msg);
   });
 });

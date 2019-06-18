@@ -21,6 +21,7 @@ router.get("/:id", async (req, res) => {
     matches.forEach(async (match, ind) => {
       let uuid = match.uuid;
       let current = match.dataValues;
+
       let otherTeam = await models.Match.findOne({
         //busca match con mismo uuid pero de otro team.
         where: {
@@ -31,15 +32,23 @@ router.get("/:id", async (req, res) => {
         },
         include: [
           {
-            model: models.Team
+            model: models.Team,
+            include: [
+              {
+                model: models.Teamimage,
+                attributes: ["imgUrl"]
+              }
+            ]
           }
         ]
       });
 
       current.otherTeam = otherTeam.team.dataValues;
+      // current.teamPic = teamPic.team.dataValues;
       result.push(current);
       if (ind == matches.length - 1) {
         //problema de async await
+
         res.status(200).json(result);
       }
     });
