@@ -67,27 +67,35 @@ app.use(function(err, req, res, next) {
 var server = app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기중"); //server listen
 });
+
 var io = require("socket.io").listen(server);
 
 io.on("connection", socket => {
-  console.log("a user connected");
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
 
-  //join room
-  socket.on("join", data => {
-    socket.join(data.uuid);
-    socket.set("room", data.uuid);
-    socket.get("room", (error, room) => {
-      io.sockets.in(room).emit("join", data.uuid);
+  socket.on("leaveRoom", data => {
+    socket.leave(data.uuid, () => {
+      console.log(data.myTeamName + " leave a " + data.uuid);
+      io.to(data.uuid).emit("leaveRoom", data);
     });
   });
 
-  //chat message
-  socket.on("chat message", message => {
-    socket.get("room", (error, room) => {
-      io.sockets.in(room).emit("chat message", message);
+  socket.on("joinRoom", data => {
+    socket.join(data.uuid, () => {
+      console.log(data.myTeamName + " join a " + data.uuid);
+      io.to(data.uuid).emit("joinRoom", data);
     });
-
-    //io.sockets.emit('message', message);
   });
-  socket.on("disconnect", () => {});
+
+  socket.on("chat message", msg => {
+    models.Message.create({
+      toTeamId: msg.myTeamId,
+      text: msg.text,
+      toTeam: msg.teamName,
+      senderTeamId: msg.teamId
+    });
+    io.to(msg.uuid).emit("chat message", msg);
+  });
 });
