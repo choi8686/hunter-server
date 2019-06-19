@@ -49,7 +49,7 @@ db.Teamimage.belongsTo(db.Team, {
   targetKey: "id"
 });
 
-db.User.hasMany(db.Team, { foreignKey: "userId" });
+db.User.hasMany(db.Team, { foreignKey: "userId", onDelete: "cascade" });
 
 db.Team.hasMany(db.Like, { foreignKey: "toLikeId" });
 db.Like.belongsTo(db.Team, { foreignKey: "whoLikeId" });

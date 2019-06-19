@@ -14,7 +14,7 @@ var models = require("./models");
 require("dotenv").config(); // .env에 모아둔 비밀키를 읽어 process.env 객체에 넣음.
 
 var app = express();
-sequelize.sync({}); //sequelize 연결
+sequelize.sync(); //sequelize 연결
 
 /*var server = app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기중"); //server listen
@@ -69,17 +69,25 @@ var server = app.listen(app.get("port"), () => {
 });
 var io = require("socket.io").listen(server);
 
-var users = {};
 io.on("connection", socket => {
   console.log("a user connected");
-  socket.on("chat message", msg => {
-    socket.id = msg.uuid;
-    console.log(socket.id);
-    models.Message.create({
-      toTeamId: msg.teamId,
-      text: msg.text,
-      toTeam: msg.teamName
+
+  //join room
+  socket.on("join", data => {
+    socket.join(data.uuid);
+    socket.set("room", data.uuid);
+    socket.get("room", (error, room) => {
+      io.sockets.in(room).emit("join", data.uuid);
     });
-    io.socket.to(socket.id).emit("chat message", msg);
   });
+
+  //chat message
+  socket.on("chat message", message => {
+    socket.get("room", (error, room) => {
+      io.sockets.in(room).emit("chat message", message);
+    });
+
+    //io.sockets.emit('message', message);
+  });
+  socket.on("disconnect", () => {});
 });

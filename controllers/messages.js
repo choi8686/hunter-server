@@ -44,7 +44,6 @@ router.get("/:id", async (req, res) => {
       });
 
       current.otherTeam = otherTeam.team.dataValues;
-      // current.teamPic = teamPic.team.dataValues;
       result.push(current);
       if (ind == matches.length - 1) {
         //problema de async await
