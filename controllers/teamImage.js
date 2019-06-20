@@ -64,22 +64,4 @@ router.get("/:teamId", async (req, res) => {
     });
 });
 
-router.put("/changePic/:teamId", async (req, res) => {
-  try {
-    const changePic = await models.Teamimage.update(
-      {
-        imgUrl: res.body.imgUrl
-      },
-      {
-        where: {
-          teamId: req.params.teamId
-        }
-      }
-    );
-    res.send(changePic);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(400);
-  }
-});
 module.exports = router;
