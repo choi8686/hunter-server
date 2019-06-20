@@ -44,4 +44,25 @@ router.post("/", upload.single("photo"), (req, res, next) => {
     });
 });
 
+router.get("/:teamId", async (req, res) => {
+  let id = req.params.teamId;
+  models.Team.findOne({
+    include: [
+      {
+        model: models.Teamimage,
+        where: {
+          teamId: id
+        },
+        attributes: ["imgUrl"]
+      }
+    ]
+  })
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
 module.exports = router;
