@@ -9,7 +9,7 @@ var logger = require("morgan");
 var sequelize = require("./models").sequelize;
 var passportConfig = require("./passport");
 var session = require("express-session");
-var socket = require("./socket");
+
 var models = require("./models");
 require("dotenv").config(); // .env에 모아둔 비밀키를 읽어 process.env 객체에 넣음.
 
@@ -90,6 +90,4 @@ io.on("connection", socket => {
     });
     io.to(msg.uuid).emit("chat message", msg);
   });
-
-  socket.on("new mail", msg => {});
 });

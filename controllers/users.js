@@ -92,6 +92,14 @@ router.get("/logout", isLoggedIn, (req, res) => {
 router.post("/destroy/:id", async (req, res) => {
   const id = req.params.id;
   await models.User.destroy({
+    include: [
+      {
+        model: models.Team,
+        where: {
+          userId: id
+        }
+      }
+    ],
     where: {
       id: id
     }

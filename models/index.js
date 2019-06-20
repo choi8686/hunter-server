@@ -56,6 +56,6 @@ db.User.hasMany(db.Team, { foreignKey: "userId", onDelete: "cascade" });
 db.Team.hasMany(db.Like, { foreignKey: "toLikeId", onDelete: "cascade" });
 db.Like.belongsTo(db.Team, { foreignKey: "whoLikeId" });
 
-db.Team.hasMany(db.Match, { foreignKey: "teamId" });
+db.Team.hasMany(db.Match, { foreignKey: "teamId", onDelete: "cascade" });
 db.Match.belongsTo(db.Team);
 module.exports = db;
