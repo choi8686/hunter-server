@@ -70,10 +70,6 @@ io.on("connection", socket => {
 
   socket.on("leaveRoom", data => {
     socket.leave(data.uuid, () => {
-      console.log(data.myTeamName + " leave a " + data.uuid);
-      models.Match.update({
-        status: 0
-      });
       io.to(data.uuid).emit("leaveRoom", data);
     });
   });
@@ -94,4 +90,6 @@ io.on("connection", socket => {
     });
     io.to(msg.uuid).emit("chat message", msg);
   });
+
+  socket.on("new mail", msg => {});
 });

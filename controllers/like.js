@@ -8,7 +8,7 @@ router.post("", async (req, res) => {
   try {
     //try this code.
     const existent = await models.Like.findAll({
-      //1. toLikeId find whoLikeId who liked before.
+      //toLikeId find whoLikeId who liked before.
       where: { whoLikeId, toLikeId }
     });
     if (existent.length == 0) {
@@ -19,17 +19,20 @@ router.post("", async (req, res) => {
       });
     }
     const match = await models.Like.findOne({
+      //find liked each other.
       where: {
         toLikeId: whoLikeId,
         whoLikeId: toLikeId
       }
     });
+    // if they matched create new Match in Match table.
     if (match) {
       const uuid = uuidv4();
+
       const created = await models.Match.create({
         teamId: whoLikeId,
         status: 1,
-        uuid
+        uuid //they have a same uuid.
       });
       await models.Match.create({
         teamId: toLikeId,

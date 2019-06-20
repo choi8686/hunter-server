@@ -42,20 +42,19 @@ db.Team.belongsTo(db.Store, {
 
 db.Team.hasMany(db.Teamimage, {
   foreignKey: "teamId",
-  sourceKey: "id"
+  sourceKey: "id",
+  onDelete: "cascade"
 });
 db.Teamimage.belongsTo(db.Team, {
   foreignKey: "teamId",
-  targetKey: "id"
+  targetKey: "id",
+  onDelete: "cascade"
 });
 
 db.User.hasMany(db.Team, { foreignKey: "userId", onDelete: "cascade" });
 
-db.Team.hasMany(db.Like, { foreignKey: "toLikeId" });
+db.Team.hasMany(db.Like, { foreignKey: "toLikeId", onDelete: "cascade" });
 db.Like.belongsTo(db.Team, { foreignKey: "whoLikeId" });
-
-// db.Team.hasMany(db.Message, { foreignKey: "toTeamId" });
-// db.Message.belongsTo(db.Team, { foreignKey: "senderTeamId" });
 
 db.Team.hasMany(db.Match, { foreignKey: "teamId" });
 db.Match.belongsTo(db.Team);
