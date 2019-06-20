@@ -58,4 +58,17 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/messages/:uuid", async (req, res) => {
+  try {
+    const messages = await models.Message.findAll({
+      where: {
+        chatroomUUID: req.params.uuid
+      }
+    });
+    res.send(messages);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(400);
+  }
+});
 module.exports = router;

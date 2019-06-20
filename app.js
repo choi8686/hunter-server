@@ -16,13 +16,6 @@ require("dotenv").config(); // .env에 모아둔 비밀키를 읽어 process.env
 var app = express();
 sequelize.sync(); //sequelize 연결
 
-/*var server = app.listen(app.get("port"), () => {
-  console.log(app.get("port"), "번 포트에서 대기중"); //server listen
-});
-var io = require("socket.io").listen(server);*/
-
-//io.on("connection", socket);
-
 app.set("port", process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(logger("dev"));
@@ -78,6 +71,9 @@ io.on("connection", socket => {
   socket.on("leaveRoom", data => {
     socket.leave(data.uuid, () => {
       console.log(data.myTeamName + " leave a " + data.uuid);
+      models.Match.update({
+        status: 0
+      });
       io.to(data.uuid).emit("leaveRoom", data);
     });
   });
@@ -91,10 +87,10 @@ io.on("connection", socket => {
 
   socket.on("chat message", msg => {
     models.Message.create({
-      toTeamId: msg.myTeamId,
+      senderTeamId: msg.senderTeamId,
+      recipientTeamId: msg.recipientTeamId,
       text: msg.text,
-      toTeam: msg.teamName,
-      senderTeamId: msg.teamId
+      chatroomUUID: msg.uuid
     });
     io.to(msg.uuid).emit("chat message", msg);
   });

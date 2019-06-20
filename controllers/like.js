@@ -28,10 +28,12 @@ router.post("", async (req, res) => {
       const uuid = uuidv4();
       const created = await models.Match.create({
         teamId: whoLikeId,
+        status: 1,
         uuid
       });
       await models.Match.create({
         teamId: toLikeId,
+        status: 1,
         uuid
       });
     }

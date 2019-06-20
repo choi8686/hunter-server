@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       uuid: {
         //uniqueId
         type: DataTypes.STRING
+      },
+      status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
       }
     },
     {

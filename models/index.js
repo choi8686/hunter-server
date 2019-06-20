@@ -54,8 +54,8 @@ db.User.hasMany(db.Team, { foreignKey: "userId", onDelete: "cascade" });
 db.Team.hasMany(db.Like, { foreignKey: "toLikeId" });
 db.Like.belongsTo(db.Team, { foreignKey: "whoLikeId" });
 
-db.Team.hasMany(db.Message, { foreignKey: "toTeamId" });
-db.Message.belongsTo(db.Team, { foreignKey: "senderTeamId" });
+// db.Team.hasMany(db.Message, { foreignKey: "toTeamId" });
+// db.Message.belongsTo(db.Team, { foreignKey: "senderTeamId" });
 
 db.Team.hasMany(db.Match, { foreignKey: "teamId" });
 db.Match.belongsTo(db.Team);
