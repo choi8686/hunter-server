@@ -58,7 +58,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/messages/:uuid", async (req, res) => {
+router.get("/getMessages/:uuid", async (req, res) => {
   try {
     const messages = await models.Message.findAll({
       where: {
