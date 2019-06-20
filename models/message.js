@@ -12,15 +12,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      senderTeamId: {
+      myTeamId: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      recipientTeamId: {
+      teamId: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      chatroomUUID: {
+      uuid: {
         type: DataTypes.STRING,
         allowNull: false
       }

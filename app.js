@@ -87,10 +87,10 @@ io.on("connection", socket => {
 
   socket.on("chat message", msg => {
     models.Message.create({
-      senderTeamId: msg.senderTeamId,
-      recipientTeamId: msg.recipientTeamId,
+      myTeamId: msg.myTeamId,
+      teamId: msg.teamId,
       text: msg.text,
-      chatroomUUID: msg.uuid
+      uuid: msg.uuid
     });
     io.to(msg.uuid).emit("chat message", msg);
   });
