@@ -46,14 +46,13 @@ router.post("/", upload.single("photo"), (req, res, next) => {
 
 router.get("/:teamId", async (req, res) => {
   let id = req.params.teamId;
-  models.Team.findOne({
+  models.Teamimage.findAll({
     include: [
       {
-        model: models.Teamimage,
+        model: models.Team,
         where: {
-          teamId: id
-        },
-        attributes: ["imgUrl"]
+          id: id
+        }
       }
     ]
   })
