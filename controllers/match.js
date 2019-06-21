@@ -58,7 +58,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/cancelmatch/:uuid", async (req, res) => {
+router.put("/cancelMatch/:uuid", async (req, res) => {
   try {
     const unMatch = await models.Match.update(
       {

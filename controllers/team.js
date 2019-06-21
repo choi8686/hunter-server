@@ -48,6 +48,7 @@ router.post("", (req, res) => {
     });
 });
 
+//same store에 있는 팀 list 가져오기.
 router.get("/store/:getStoreId", async (req, res) => {
   let getStoreId = req.params.getStoreId;
 
@@ -73,6 +74,7 @@ router.get("/store/:getStoreId", async (req, res) => {
     });
 });
 
+//same district에 있는 team list 가져오기
 router.get("/district/:getDistrictId", (req, res) => {
   let getDistrictId = req.params.getDistrictId;
   models.Team.findAll({
@@ -97,6 +99,7 @@ router.get("/district/:getDistrictId", (req, res) => {
     });
 });
 
+//팀 정보 수정
 router.put("/change", async (req, res, next) => {
   const { count, age, comment, teamname, userId, districtId, storeId } = req.body;
 
@@ -123,4 +126,5 @@ router.put("/change", async (req, res, next) => {
       console.log(error);
     });
 });
+
 module.exports = router;
