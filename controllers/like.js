@@ -11,9 +11,11 @@ router.post("", async (req, res, next) => {
       //toLikeId find whoLikeId who liked before.
       where: { whoLikeId, toLikeId }
     });
+
     // 만약에 whoLikeId가 toLikeId를 이미 좋아했으면
     // row가 생성되지 않고 다음으로 넘긴다.
-    let repeated = false;
+
+    let repeated = false; //좋아요 중복 판별 변수
     if (existent.length == 0) {
       await models.Like.create({
         whoLikeId: whoLikeId,
@@ -21,11 +23,10 @@ router.post("", async (req, res, next) => {
         introText: introText
       });
     } else {
-      repeated = true;
-      //res.json({ message: "You already like this user!" });
+      repeated = true; //중복 like시 true로 바뀜
     }
     if (repeated) {
-      next();
+      next(); //db입력 안하고 쓰루함
     } else {
       const match = await models.Like.findOne({
         //find liked each other.

@@ -8,7 +8,7 @@ let passport = require("passport");
 let { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 router.post("/signup", isNotLoggedIn, async (req, res, next) => {
-  //회원가입, post
+  //회원가입
   const { nickname, password } = req.body;
   try {
     const exUser = await models.User.findOne({
@@ -31,6 +31,7 @@ router.post("/signup", isNotLoggedIn, async (req, res, next) => {
   }
 });
 
+//로그인
 router.post("/login", isNotLoggedIn, async (req, res, next) => {
   passport.authenticate("local", (authError, user) => {
     if (authError) {
@@ -85,31 +86,32 @@ router.get("/info", (req, res, next) => {
   })(req, res, next);
 });
 
+//로그아웃
 router.get("/logout", isLoggedIn, (req, res) => {
   req.logout();
 });
 
+//회원탈퇴
 router.post("/destroy/:id", async (req, res) => {
   const id = req.params.id;
-  await models.User.destroy({
-    include: [
-      {
-        model: models.Team,
-        where: {
-          userId: id
+  try {
+    const destroyUser = await models.User.destroy({
+      include: [
+        {
+          model: models.Team,
+          where: {
+            userId: id
+          }
         }
+      ],
+      where: {
+        id: id
       }
-    ],
-    where: {
-      id: id
-    }
-  })
-    .then(result => {
-      res.send("USER ACCOUNT IS DELETED");
-    })
-    .catch(error => {
-      console.log(error);
     });
+    res.send(destroyUser);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;

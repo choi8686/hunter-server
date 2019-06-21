@@ -46,22 +46,23 @@ router.post("/", upload.single("photo"), (req, res, next) => {
 
 router.get("/:teamId", async (req, res) => {
   let id = req.params.teamId;
-  models.Teamimage.findAll({
-    include: [
-      {
-        model: models.Team,
-        where: {
-          id: id
+
+  try {
+    const getTeamId = await models.Teamimage.findAll({
+      include: [
+        {
+          model: models.Team,
+          where: {
+            id: id
+          }
         }
-      }
-    ]
-  })
-    .then(result => {
-      res.status(200).json(result);
-    })
-    .catch(error => {
-      console.log(error);
+      ]
     });
+    res.send(getTeamId);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(400);
+  }
 });
 
 module.exports = router;

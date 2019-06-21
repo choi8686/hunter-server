@@ -81,6 +81,15 @@ io.on("connection", socket => {
     });
   });
 
+  socket.on("send instance message from same store", data => {
+    models.Like.create({
+      whoLikeId: data.whoLikeId,
+      toLikeId: data.toLikeId,
+      introText: data.introText
+    });
+    io.to(data.toLikeId).emit("get instance message from same store", data.introText);
+  });
+
   socket.on("chat message", msg => {
     models.Message.create({
       myTeamId: msg.myTeamId,
