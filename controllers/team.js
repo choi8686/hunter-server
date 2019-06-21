@@ -17,7 +17,9 @@ router.get("/getUserIdTeam/:id", async (req, res) => {
         }
       ]
     });
-    res.send(getUserId);
+    res.status(200).json({
+      getUserId
+    });
   } catch (error) {
     console.error(error);
     res.sendStatus(400);

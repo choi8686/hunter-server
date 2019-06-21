@@ -94,24 +94,25 @@ router.get("/logout", isLoggedIn, (req, res) => {
 //회원탈퇴
 router.post("/destroy/:id", async (req, res) => {
   const id = req.params.id;
-  try {
-    const destroyUser = await models.User.destroy({
-      include: [
-        {
-          model: models.Team,
-          where: {
-            userId: id
-          }
+  await models.User.destroy({
+    include: [
+      {
+        model: models.Team,
+        where: {
+          userId: id
         }
-      ],
-      where: {
-        id: id
       }
+    ],
+    where: {
+      id: id
+    }
+  })
+    .then(result => {
+      res.send("USER ACCOUNT IS DELETED");
+    })
+    .catch(error => {
+      console.log(error);
     });
-    res.send(destroyUser);
-  } catch (error) {
-    console.log(error);
-  }
 });
 
 module.exports = router;
